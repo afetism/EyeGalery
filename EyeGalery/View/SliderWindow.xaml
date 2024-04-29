@@ -15,7 +15,7 @@
 
         <Image Grid.Row="1" Source="{Binding Source}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="200"></Image>
         <Button HorizontalAlignment="Left" Background="Transparent" BorderThickness="0" Click="Back_Click">
-            <Image Source="/images/—Pngtree—vector back icon_4190818.png" Width="100"></Image>
+            <Image Source="/Images/BACK.PNG" ></Image>
         </Button>
 
         <Grid Grid.Row="2">
@@ -32,7 +32,7 @@
                 <Image Source="/Images/pngegg (3).png"></Image>
             </Button>
             <Button Grid.Column="2" Style="{StaticResource CircleButton}" Width="80" HorizontalAlignment="left"  Margin="10" HorizontalContentAlignment="Center" Click="Auto_Play_Click">
-                <Image Source="/Images/—Pngtree—black vector play button icon_4231897.png"></Image>
+                <Image Source="/Images/autoPlay.png"></Image>
             </Button>
             <Button Name="Next" Grid.Column="3" Style="{StaticResource CircleButton}" Width="80" HorizontalAlignment="left"  Margin="10" Click="Next_Click">
                 <Image Source="/Images/pngegg (4).png" Width="60"></Image>

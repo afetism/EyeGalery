@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EyeGalery"
         mc:Ignorable="d"
-        Title="Eye Galery" Height="362" Width="551"  MinHeight="362" MinWidth="551" >
+        Title="Eye Galery" Height="400" Width="600"  MinHeight="362" MinWidth="551" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
@@ -26,32 +26,16 @@
             </MenuItem>
             <MenuItem Header="View" >
                 <MenuItem Header="Tiles" Foreground="Black">
-                    <MenuItem Header="Small Icon" Foreground="Black"/>
-                    <MenuItem Header="Details" Foreground="Black"/>
+                    <MenuItem Header="Small Icon" Foreground="Black" Click="Click_SmallIcon"/>
+                    <MenuItem Header="Large Icon" Foreground="Black" Click="Click_LargeIcon"  />
                 </MenuItem>
                
             </MenuItem>
         </Menu>
         
         <Grid Name="Grid1" Grid.Row="1">
-            <ListBox Name="ListBox" ItemsSource="{Binding Items}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="ListBox_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="10">
-                            <Image Source="{Binding}" Stretch="Uniform" Width="200" Height="200"/>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" Margin="20"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+            <ListBox Name="ListBox" ItemsSource="{Binding Items}" Style="{DynamicResource ImageListBoxStyle}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="ListBox_MouseDoubleClick">
+               
             </ListBox>
 
         </Grid>

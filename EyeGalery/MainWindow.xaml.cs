@@ -14,6 +14,8 @@ using System.Windows.Media;
 using ListBox = System.Windows.Controls.ListBox;
 using Image = System.Windows.Controls.Image;
 using EyeGalery.View;
+using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
+using MessageBox = System.Windows.Forms.MessageBox;
 namespace EyeGalery
 {
     /// <summary>
@@ -38,10 +40,10 @@ namespace EyeGalery
 
 
         private void Click_New(object sender, RoutedEventArgs e)
-        {
+        { 
             Items.Clear();
 
-            Items=new();
+            
         }
         public string root;
 
@@ -68,16 +70,43 @@ namespace EyeGalery
 
 
 
+        private void WriteDataToFile(string filePath)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    foreach (string item in Items)
+                    {
+                        writer.WriteLine(item);
+                    }
+                }
+                MessageBox.Show("Data has been successfully written to the file.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while writing the data to the file: " + ex.Message);
+            }
+        }
 
 
 
-    
-    
+
 
         private void Click_SaveAs(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Images files (*.png)|*.png|Images files (*jpeg*)|*jpeg*";
 
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string selectedFilePath = saveFileDialog.FileName;
+                WriteDataToFile(selectedFilePath);
+                MessageBox.Show("All Images Saved");
+               
+            }
         }
+    
 
         private void Click_Exit(object sender, RoutedEventArgs e)
         {
@@ -86,19 +115,7 @@ namespace EyeGalery
 
         private void Click_Save(object sender, RoutedEventArgs e)
         {
-            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
-
-            if (dialog.ShowDialog(this).GetValueOrDefault())
-            {
-                string selectedFolderPath = dialog.SelectedPath;
-
-                
-                string fileName = "yeniDosya.txt";
-                string filePath = Path.Combine(selectedFolderPath, fileName);
-
-               
-                File.WriteAllText(filePath, "Dosya içeriği");
-            }
+            
         }
 
         private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -136,6 +153,18 @@ namespace EyeGalery
 
                 Items.Add(selectedFile);
             }
+        }
+
+        private void Click_SmallIcon(object sender, RoutedEventArgs e)
+        {
+            ListBox.Style = FindResource("SmallIconListBoxStyle") as Style;
+
+
+        }
+
+        private void Click_LargeIcon(object sender, RoutedEventArgs e)
+        {
+            ListBox.Style = FindResource("ImageListBoxStyle") as Style;
         }
     }
 }

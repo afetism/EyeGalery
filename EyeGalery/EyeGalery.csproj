@@ -10,11 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\autoPlay.png" />
+    <None Remove="Images\back.png" />
     <None Remove="Images\pngegg %283%29.png" />
     <None Remove="Images\pngegg %284%29.png" />
     <None Remove="Images\pngegg %285%29.png" />
-    <None Remove="Images\—Pngtree—black vector play button icon_4231897.png" />
-    <None Remove="Images\—Pngtree—vector back icon_4190818.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +36,10 @@
     <Content Include="Images\pngegg (5).png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\—Pngtree—black vector play button icon_4231897.png">
+    <Content Include="Images\autoPlay.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\—Pngtree—vector back icon_4190818.png">
+    <Content Include="Images\back.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
