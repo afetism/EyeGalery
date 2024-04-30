@@ -2,30 +2,27 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms;
 using System.Windows;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
+using Ookii.Dialogs.Wpf;
 using ListBox = System.Windows.Controls.ListBox;
-using Image = System.Windows.Controls.Image;
 using EyeGalery.View;
-using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
-using MessageBox = System.Windows.Forms.MessageBox;
-namespace EyeGalery
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+
+
+namespace EyeGalery;
+
+
+
+
+
+    
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
       
         public ObservableCollection<String> Items { get; set; } = new ObservableCollection<String>();
-
+        bool  firstSave= true;
+        String SelectedFolder { get; set; }=String.Empty;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,7 +42,7 @@ namespace EyeGalery
 
             
         }
-        public string root;
+   
 
         private void Click_Open(object sender, RoutedEventArgs e)
         {
@@ -56,9 +53,9 @@ namespace EyeGalery
 
             if (dialog.ShowDialog(this).GetValueOrDefault())
             {
-                string selectedFolder = dialog.SelectedPath;
+             string selectedFolder = dialog.SelectedPath;
 
-                root=selectedFolder;
+                
                 var files = Directory.GetFiles(selectedFolder);
 
                 foreach (string file in files)
@@ -69,54 +66,80 @@ namespace EyeGalery
         }
 
 
-
-        private void WriteDataToFile(string filePath)
+        private void Click_Save(object sender, RoutedEventArgs e)
         {
-            try
+          if(firstSave)
+          {
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+            dialog.Description = "Select a folder";
+            dialog.UseDescriptionForTitle = true;
+
+            if (dialog.ShowDialog(this).GetValueOrDefault())
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                string selectedFolder = dialog.SelectedPath;
+                foreach (string imagePath in Items)
                 {
-                    foreach (string item in Items)
+                    string fileName = Path.GetFileName(imagePath);
+                    string destinationPath = Path.Combine(selectedFolder, fileName);
+
+                    if (!File.Exists(destinationPath))
                     {
-                        writer.WriteLine(item);
+                        File.Copy(imagePath, destinationPath);
                     }
                 }
-                MessageBox.Show("Data has been successfully written to the file.");
             }
-            catch (Exception ex)
+          }
+          else
+          {
+            string selectedFolder = SelectedFolder;
+            foreach (string imagePath in Items)
             {
-                MessageBox.Show("An error occurred while writing the data to the file: " + ex.Message);
+                string fileName = Path.GetFileName(imagePath);
+                string destinationPath = Path.Combine(selectedFolder, fileName);
+
+                if (!File.Exists(destinationPath))
+                {
+                    File.Copy(imagePath, destinationPath);
+                }
             }
         }
-
+        }
 
 
 
 
         private void Click_SaveAs(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Images files (*.png)|*.png|Images files (*jpeg*)|*jpeg*";
 
-            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+            dialog.Description = "Select a folder";
+            dialog.UseDescriptionForTitle = true;
+
+            if (dialog.ShowDialog(this).GetValueOrDefault())
             {
-                string selectedFilePath = saveFileDialog.FileName;
-                WriteDataToFile(selectedFilePath);
-                MessageBox.Show("All Images Saved");
-               
-            }
+                string selectedFolder = dialog.SelectedPath;
+                SelectedFolder = selectedFolder;
+                foreach (string imagePath in Items)
+                {
+                    string fileName = Path.GetFileName(imagePath);
+                    string destinationPath = Path.Combine(selectedFolder, fileName);
+
+                    if (!File.Exists(destinationPath))
+                    {
+                        File.Copy(imagePath, destinationPath);
+                    }
+                }
+            firstSave=false;
         }
-    
+     
+        }
 
         private void Click_Exit(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
         }
 
-        private void Click_Save(object sender, RoutedEventArgs e)
-        {
-            
-        }
+       
 
         private void ListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -167,4 +190,3 @@ namespace EyeGalery
             ListBox.Style = FindResource("ImageListBoxStyle") as Style;
         }
     }
-}
